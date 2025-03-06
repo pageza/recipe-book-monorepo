@@ -1,7 +1,7 @@
 .PHONY: build up down logs api-test resolver-test test
 
 build:
-	docker compose -f docker-compose.yml build
+	docker compose -f docker-compose.yml build --no-cache
 
 up:
 	docker compose -f docker-compose.yml up -d

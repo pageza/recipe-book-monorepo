@@ -2,6 +2,7 @@ version: "3.9"
 
 services:
   postgres:
+    container_name: postgres
     image: ankane/pgvector:latest
     restart: always
     ports:
@@ -14,6 +15,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   migrate:
+    container_name: migrate
     build:
       context: ./recipe-book-api-v2
       dockerfile: Dockerfile.migrate
@@ -28,6 +30,7 @@ services:
       - postgres
 
   api:
+    container_name: api
     build:
       context: ./recipe-book-api-v2
       dockerfile: Dockerfile
@@ -49,9 +52,12 @@ services:
       JWT_SECRET: "your_jwt_secret"
 
   resolver:
+    container_name: resolver
     build:
       context: ./recipe-resolver-ms
       dockerfile: Dockerfile
+    env_file:
+      - ./recipe-resolver-ms/.env
     ports:
       - "3000:3000"
     depends_on:
