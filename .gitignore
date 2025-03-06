@@ -1,0 +1,40 @@
+# Environment files (except .env.example)
+.env
+.env.*
+!.env.example
+
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Build directories
+build/
+dist/
+
+# Vendor directories
+vendor/
+**/vendor/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Temporary files and directories
+tmp/
+
+# Docker artifacts
+docker-compose.override.yml
+
+# Dev container temporary files
+.devcontainer/tmp/
+
+# IDE-specific files
+.vscode/
+.idea/ 

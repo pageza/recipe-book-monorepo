@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: ankane/pgvector:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: recipe_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  migrate:
+    build:
+      context: ./recipe-book-api-v2
+      dockerfile: Dockerfile.migrate
+    environment:
+      DB_HOST: "postgres"
+      DB_PORT: "5432"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_NAME: "recipe_db"
+      DROP_TABLES: "false"
+    depends_on:
+      - postgres
+
+  api:
+    build:
+      context: ./recipe-book-api-v2
+      dockerfile: Dockerfile
+    command: ["go", "run", "cmd/api-gateway/main.go"]
+    ports:
+      - target: 8080
+        published: 8081
+        protocol: tcp
+        mode: host
+    depends_on:
+      - postgres
+    environment:
+      PORT: "8080"
+      DB_HOST: "postgres"
+      DB_PORT: "5432"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_NAME: "recipe_db"
+      JWT_SECRET: "your_jwt_secret"
+
+  resolver:
+    build:
+      context: ./recipe-resolver-ms
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      PORT: "3000"
+      DB_HOST: "postgres"
+      DB_PORT: "5432"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_NAME: "recipe_db"
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  pgdata: 

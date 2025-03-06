@@ -1,0 +1,30 @@
+{
+  "name": "Recipe App Dev Container",
+  "dockerFile": "Dockerfile.dev",
+  "context": ".",
+  "runArgs": [
+    "--group-add", "999",
+    "--add-host=host.docker.internal:host-gateway",
+    "--network", "backend"
+],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "golang.go",
+        "ms-azuretools.vscode-docker",
+        "ms-vscode-remote.remote-containers",
+        "Postman.postman-for-vscode",
+        "ms-vscode.makefile-tools"
+      ]
+    }
+  },
+  "postCreateCommand": "git config --global user.name 'pageza' && git config --global user.email 'zap.freelance@gmail.com' && go mod tidy",
+  "remoteUser": "vscode",
+  // "forwardPorts": [8080, 8081],
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+  ]
+}
