@@ -1,0 +1,6 @@
+[submodule "recipe-book-api-v2"]
+	path = recipe-book-api-v2
+	url = https://github.com/pageza/recipe-book-api-v2.git
+[submodule "recipe-resolver-ms"]
+	path = recipe-resolver-ms
+	url = https://github.com/pageza/recipe-resolver-ms.git
